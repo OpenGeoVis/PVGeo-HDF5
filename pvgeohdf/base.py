@@ -5,14 +5,7 @@ __all__ = [
     'netCDFPointsReaderBase',
 ]
 
-__displayname__ = 'netCDF I/O'
-
-
-import vtk
-import numpy as np
-from vtk.numpy_interface import dataset_adapter as dsa
-import pandas as pd
-import warnings
+__displayname__ = 'Base Classes'
 
 import netCDF4
 

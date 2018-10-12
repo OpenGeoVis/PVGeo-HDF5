@@ -7,12 +7,8 @@ __all__ = [
 __displayname__ = 'netCDF I/O'
 
 
-import vtk
 import numpy as np
-from vtk.numpy_interface import dataset_adapter as dsa
 import pandas as pd
-import warnings
-
 import netCDF4
 
 # Import PVGeo helpers:
