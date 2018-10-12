@@ -13,6 +13,8 @@ from vtk.numpy_interface import dataset_adapter as dsa
 import pandas as pd
 import warnings
 
+import netCDF4
+
 
 # Import PVGeo helpers:
 from PVGeo.base import ReaderBase, ReaderBaseBase
@@ -33,24 +35,71 @@ class SVCParcelReader(ReaderBaseBase):
         ReaderBaseBase.__init__(self, nOutputPorts=1, outputType='vtkPolyData', **kwargs)
         self.__timesteps = [] # Initialize as empty
         self.__dataName = kwargs.get('name', 'Data')
+        self.__data = None
+        self.__dataSet = None
+        self.__keys = []
 
     #### File reading methods ####
+
+    def GetFileName(self):
+        """Super class has file names as a list but we will only handle a single
+        project file. This provides a conveinant way of making sure we only
+        access that single file.
+        A user could still access the list of file names using ``GetFileNames()``.
+        """
+        return ReaderBaseBase.GetFileNames(self, idx=0)
 
     def _GetFileContents(self, idx=None):
         """This happens up front so the data read happens only once and ParaView
         will be able to make calls on the ``RequestData`` method to get the data
         for a specific timestep"""
-        raise NotImplementedError('Code me up!')
+        self.__dataSet = netCDF4.Dataset(self.GetFileName())
+        return 1
 
     def _ReadUpFront(self):
-        """Override to handle making time series of the different data arrays
+        """This parses the file contents to numpy ndarray. The first axis
+        represents a time step in the model space.
         """
         # Perform Read
-        contents = self._GetFileContents()
+        self._GetFileContents()
 
-        # TODO: we need to set self.__timesteps here
-        #       It should simply by a list of the time steps to use
+        ###############################################
+        # TODO: this needs to be generalized with for any array names
+        # Allow this to be chosen by user:
+        poskeys = ["parcel_x_pos", "parcel_y_pos", "parcel_z_pos"]
+        ###############################
+        x_pos2 = self.__dataSet.variables[poskeys[0]]
+        y_pos2 = self.__dataSet.variables[poskeys[1]]
+        z_pos2 = self.__dataSet.variables[poskeys[2]]
 
+        tshape = x_pos2.shape[1]
+        num = x_pos2.shape[0]
+        self.__timesteps = [i for i in range(tshape)]
+
+        # Now get the rest of the data
+        self.__keys = list(self.__dataSet.variables.keys())
+        dataArrs = dict()
+        for k in list(self.__dataSet.variables.keys()):
+            if k not in poskeys:
+                dataArrs.setdefault(k, self.__dataSet.variables[k])
+
+        nAtts = len(dataArrs.keys())
+
+        # 3D array where first axis is time
+        # and second-third axii are basically a table of XYZ+attributes
+        self.__data = np.zeros((tshape, num, 3 + nAtts))
+        # Add the XYZ points first by convention for PVGeo
+        self.__data[:, :, 0] = np.array(x_pos2).swapaxes(0,1)
+        self.__data[:, :, 1] = np.array(y_pos2).swapaxes(0,1)
+        self.__data[:, :, 2] = np.array(z_pos2).swapaxes(0,1)
+        # Now append all the data arrays
+        i = 3
+        self.__keys = []
+        for name, d in dataArrs.items():
+            self.__data[:, :, i] = np.array(d).swapaxes(0,1)
+            self.__keys.append(name)
+            i += 1
+        # Mark as read
         self.NeedToRead(flag=False)
         return 1
 
@@ -59,8 +108,11 @@ class SVCParcelReader(ReaderBaseBase):
         """Get the Points as numpy ndarrays or pandas dataframe where first three
         columns are the XYZ coordinates
         """
-        raise NotImplementedError('Code me up!')
-
+        # Get the time step then make a data frame
+        data = self.__data[idx, :, :]
+        names = ["X", "Y", "Z"] + self.__keys
+        df = pd.DataFrame(data=data, columns=names)
+        return df
 
     #### Algorithm Methods ####
 

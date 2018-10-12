@@ -39,9 +39,9 @@ class PVGeoHDFSVCParcelReader(SVCParcelReader):
     def AddFileName(self, fname):
         SVCParcelReader.AddFileName(self, fname)
 
-    @smproperty.doublevector(name="TimeDelta", default_values=1.0, panel_visibility="advanced")
-    def SetTimeDelta(self, dt):
-        SVCParcelReader.SetTimeDelta(self, dt)
+    # @smproperty.doublevector(name="TimeDelta", default_values=1.0, panel_visibility="advanced")
+    # def SetTimeDelta(self, dt):
+    #     SVCParcelReader.SetTimeDelta(self, dt)
 
     @smproperty.doublevector(name="TimestepValues", information_only="1", si_class="vtkSITimeStepsProperty")
     def GetTimestepValues(self):
