@@ -28,7 +28,7 @@ class SVCParcelReader(ReaderBaseBase):
     """SVCParcelReader for Kelton"""
     __displayname__ = 'SVC Parcel Reader'
     __category__ = 'reader'
-    extensions = 'netCDF netcdf'
+    extensions = 'nc netCDF netcdf'
     def __init__(self, **kwargs):
         ReaderBaseBase.__init__(self, nOutputPorts=1, outputType='vtkPolyData', **kwargs)
         self.__timesteps = [] # Initialize as empty
