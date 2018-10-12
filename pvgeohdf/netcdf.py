@@ -15,10 +15,8 @@ import warnings
 
 import netCDF4
 
-
 # Import PVGeo helpers:
-from PVGeo.base import ReaderBase, ReaderBaseBase
-from PVGeo.readers import DelimitedTextReader
+from PVGeo.base import ReaderBaseBase
 from PVGeo import _helpers
 from PVGeo import interface
 
@@ -57,14 +55,14 @@ class SVCParcelReader(ReaderBaseBase):
         return 1
 
     def _ReadUpFront(self):
-        """This parses the file contents to numpy ndarray. The first axis
+        """This parses the loaded dataset to a NumPy ndarray. The first axis
         represents a time step in the model space.
         """
         # Perform Read
         self._GetFileContents()
 
         ###############################################
-        # TODO: this needs to be generalized with for any array names
+        # TODO: this needs to be generalized for any array names
         # Allow this to be chosen by user:
         poskeys = ["parcel_x_pos", "parcel_y_pos", "parcel_z_pos"]
         ###############################
@@ -82,7 +80,6 @@ class SVCParcelReader(ReaderBaseBase):
         for k in list(self.__dataSet.variables.keys()):
             if k not in poskeys:
                 dataArrs.setdefault(k, self.__dataSet.variables[k])
-
         nAtts = len(dataArrs.keys())
 
         # 3D array where first axis is time
@@ -153,8 +150,7 @@ class SVCParcelReader(ReaderBaseBase):
 
 
     def RequestInformation(self, request, inInfo, outInfo):
-        """This is a convenience method that should be overwritten when needed.
-        This will handle setting the timesteps appropriately based on the number
+        """This will handle setting the timesteps appropriately based on the number
         of file names when the pipeline needs to know the time information.
         """
         if self.NeedToRead():
@@ -165,7 +161,8 @@ class SVCParcelReader(ReaderBaseBase):
     #### Getters/Setters ####
 
     def SetDataName(self, name):
-        """This is an example of how to set a property for this reader to use
+        """This is an example of how to set a property for this reader to use.
+        Note that we do not use this property.
         """
         # WARNING: You must call ``self.Modified`` like below
         if self.__dataName != name:
