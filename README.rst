@@ -1,5 +1,5 @@
-PVGeo-HDF5
-==========
+HDF & netCDF I/O for PVGeo
+==========================
 
 .. image:: https://readthedocs.org/projects/pvgeo-hdf5/badge/?version=latest
    :target: http://hdf5.pvgeo.org
@@ -18,6 +18,17 @@ PVGeo-HDF5
    :alt: GitHub
 
 An offshoot of `PVGeo`_ for HDF5 and netCDF data formats.
+
+.. admonition:: Why isn't this included in PVGeo?
+
+    These features are experimental and we are concerned about how netCDF/HDF files
+    do not have any inherit structure that might define spatially referenced data.
+    We are also concerned that some of the dependancies for HDF5 I/O libraries
+    might make PVGeo's installation process a bit cumbersome for the average user.
+
+    If we find that this framework is simple, and doesn't add to much weight to PVGeo,
+    then we will merge this project into a new suite within `PVGeo`_.
+
 
 .. _PVGeo: http://pvgeo.org
 
