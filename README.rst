@@ -2,7 +2,7 @@ PVGeo-HDF5
 ==========
 
 .. image:: https://readthedocs.org/projects/pvgeo-hdf5/badge/?version=latest
-   :target: https://pvgeo-hdf5.readthedocs.io/en/latest/
+   :target: http://hdf5.pvgeo.org
    :alt: Documentation Status
 
 .. image:: https://img.shields.io/badge/docs%20by-gendocs-blue.svg

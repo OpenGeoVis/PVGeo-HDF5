@@ -165,7 +165,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'PVGeo-HDF5', 'PVGeo-HDF5 Documentation',
-     author, 'PVGeo-HDF5', 'One line description of project.',
+     author, 'PVGeo-HDF5', 'PVGeo interface for HDF5 and netCDF4 data.',
      'Miscellaneous'),
 ]
 

@@ -24,6 +24,7 @@ setuptools.setup(
         'numpy>=1.13',
         'scipy>=1.1',
         #'vtk>=8.1.1', # NOTE: windows users need to be in Python 3
+        'netCDF4>=1.4.1',
     ],
     classifiers=(
         "Programming Language :: Python",
