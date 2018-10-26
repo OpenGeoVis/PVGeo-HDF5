@@ -1,8 +1,8 @@
 """``pvgeohdf``: An offshoot of PVGeo for HDF5 and netCDF data formats in ParaView
 """
 
-from . import base
-from . import netcdf
+from .base import *
+from .netcdf import *
 
 
 

@@ -52,3 +52,39 @@ class PVGeoHDFSVCParcelReader(SVCParcelReader):
     @smproperty.stringvector(name='DataName', default_values='Data')
     def SetDataName(self, name):
         SVCParcelReader.SetDataName(self, name)
+
+
+###############################################################################
+
+SVC_DESC = "CMAQ Reader: Time varying grid"
+
+@smproxy.reader(name="PVGeoCMAQReader",
+       label="PVGeo: CMAQ Reader",
+       extensions=CMAQReader.extensions,
+       file_description=SVC_DESC)
+class PVGeoCMAQReader(CMAQReader):
+    def __init__(self):
+        CMAQReader.__init__(self)
+
+    #### Seters and Geters ####
+
+    @smproperty.xml(_helpers.getFileReaderXml(CMAQReader.extensions, readerDescription=SVC_DESC))
+    def AddFileName(self, fname):
+        CMAQReader.AddFileName(self, fname)
+
+    # @smproperty.doublevector(name="TimeDelta", default_values=1.0, panel_visibility="advanced")
+    # def SetTimeDelta(self, dt):
+    #     CMAQReader.SetTimeDelta(self, dt)
+
+    @smproperty.doublevector(name="TimestepValues", information_only="1", si_class="vtkSITimeStepsProperty")
+    def GetTimestepValues(self):
+        """This is critical for registering the timesteps"""
+        return CMAQReader.GetTimestepValues(self)
+
+    @smproperty.doublevector(name="Spacing", default_values=[1.0, 1.0, 1.0],)
+    def SetSpacing(self, dx, dy, dz):
+        CMAQReader.SetSpacing(self, dx, dy, dz)
+
+    @smproperty.doublevector(name="Origin", default_values=[0.0, 0.0, 0.0],)
+    def SetOrigin(self, ox, oy, oz):
+        CMAQReader.SetOrigin(self, ox, oy, oz)
