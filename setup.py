@@ -30,7 +30,7 @@ if os.name == 'nt' and (int(sys.version[0]) < 3 or '64' not in platform.architec
                   '  Try using Anaconda.  See:\n'
                   + 'https://anaconda.org/anaconda/vtk')
 else:
-    install_requires.append('vtk>=8.1')
+    install_requires.append(['vtk>=8.1'])
 
 
 
