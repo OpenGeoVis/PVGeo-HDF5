@@ -2,6 +2,10 @@
 """
 
 import setuptools
+import warnings
+import platform
+import sys
+import os
 
 __version__ = '0.0.1'
 
