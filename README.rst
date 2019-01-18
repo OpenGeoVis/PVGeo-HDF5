@@ -33,3 +33,22 @@ An offshoot of `PVGeo`_ for HDF5 and netCDF data formats.
 .. _PVGeo: http://pvgeo.org
 
 This project is a work in progress!
+
+
+Installation
+------------
+
+.. code-block:: bash
+
+    git clone https://github.com/OpenGeoVis/PVGeo-HDF5.git
+    cd PVGeo-HDF5
+
+    pip install -e .
+
+
+Examples
+--------
+
+Take a look at the notebook examples under the `examples directory`_
+
+.. _examples directory: https://github.com/OpenGeoVis/PVGeo-HDF5/examples
