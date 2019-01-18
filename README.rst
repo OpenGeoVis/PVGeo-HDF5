@@ -51,4 +51,4 @@ Examples
 
 Take a look at the notebook examples under the `examples directory`_
 
-.. _examples directory: https://github.com/OpenGeoVis/PVGeo-HDF5/examples
+.. _examples directory: https://github.com/OpenGeoVis/PVGeo-HDF5/tree/master/examples
