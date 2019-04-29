@@ -44,14 +44,14 @@ class PVGeoHDFSVCParcelReader(SVCParcelReader):
     #     SVCParcelReader.SetTimeDelta(self, dt)
 
     @smproperty.doublevector(name="TimestepValues", information_only="1", si_class="vtkSITimeStepsProperty")
-    def GetTimestepValues(self):
+    def get_time_step_values(self):
         """This is critical for registering the timesteps"""
-        return SVCParcelReader.GetTimestepValues(self)
+        return SVCParcelReader.get_time_step_values(self)
 
     # This is an example of how to create a GUI input field
     @smproperty.stringvector(name='DataName', default_values='Data')
-    def SetDataName(self, name):
-        SVCParcelReader.SetDataName(self, name)
+    def set_data_name(self, name):
+        SVCParcelReader.set_data_name(self, name)
 
 
 ###############################################################################
@@ -77,14 +77,14 @@ class PVGeoCMAQReader(CMAQReader):
     #     CMAQReader.SetTimeDelta(self, dt)
 
     @smproperty.doublevector(name="TimestepValues", information_only="1", si_class="vtkSITimeStepsProperty")
-    def GetTimestepValues(self):
+    def get_time_step_values(self):
         """This is critical for registering the timesteps"""
-        return CMAQReader.GetTimestepValues(self)
+        return CMAQReader.get_time_step_values(self)
 
     @smproperty.doublevector(name="Spacing", default_values=[1.0, 1.0, 1.0],)
-    def SetSpacing(self, dx, dy, dz):
-        CMAQReader.SetSpacing(self, dx, dy, dz)
+    def set_spacing(self, dx, dy, dz):
+        CMAQReader.set_spacing(self, dx, dy, dz)
 
     @smproperty.doublevector(name="Origin", default_values=[0.0, 0.0, 0.0],)
-    def SetOrigin(self, ox, oy, oz):
-        CMAQReader.SetOrigin(self, ox, oy, oz)
+    def set_origin(self, ox, oy, oz):
+        CMAQReader.set_origin(self, ox, oy, oz)

@@ -39,7 +39,7 @@ class netCDFReaderBase(ReaderBaseBase):
         """
         return ReaderBaseBase.GetFileNames(self, idx=0)
 
-    def _GetFileContents(self, idx=None):
+    def _get_file_contents(self, idx=None):
         """This opens a netCDF4 DataSet.
         This happens up front so the data read happens only once and ParaView
         will be able to make calls on the ``RequestData`` method to get the data
@@ -47,18 +47,18 @@ class netCDFReaderBase(ReaderBaseBase):
         self._dataSet = netCDF4.Dataset(self.GetFileName())
         return 1
 
-    def _ReadUpFront(self):
+    def _read_up_front(self):
         """OVERRIDE: This parses the loaded dataset.
         """
         # Perform Read
-        self._GetFileContents()
+        self._get_file_contents()
         raise NotImplementedError('Code me up!')
         # Mark as read
-        self.NeedToRead(flag=False)
+        self.need_to_read(flag=False)
         return 1
 
 
-    def _GetRawData(self, idx=0):
+    def _get_raw_data(self, idx=0):
         """Get the data as the called for data object. Return type depends on
         higher level API.
 
@@ -79,19 +79,19 @@ class netCDFReaderBase(ReaderBaseBase):
         # Get output:
         output = self.GetOutputData(outInfo, 0)
         # Get requested time index
-        i = _helpers.getRequestedTime(self, outInfo)
-        if self.NeedToRead():
-            self._ReadUpFront()
+        i = _helpers.get_requested_time(self, outInfo)
+        if self.need_to_read():
+            self._read_up_front()
         raise NotImplementedError('Code me up!')
         return 1 # NOTE: ALWAYS return 1 on pipeline methods
 
 
-    def _UpdateTimeSteps(self):
+    def _update_time_steps(self):
         """For internal use only: appropriately sets the timesteps.
         """
-        if self.NeedToRead():
-            self._ReadUpFront()
-        # NOTE: Assumes self._ReadUpFront() handls timestep generation
+        if self.need_to_read():
+            self._read_up_front()
+        # NOTE: Assumes self._read_up_front() handls timestep generation
         if len(self._timesteps) > 1:
             executive = self.GetExecutive()
             oi = executive.GetOutputInformation(0)
@@ -109,20 +109,20 @@ class netCDFReaderBase(ReaderBaseBase):
         """This will handle setting the timesteps appropriately based on the number
         of file names when the pipeline needs to know the time information.
         """
-        if self.NeedToRead():
-            self._ReadUpFront()
-        self._UpdateTimeSteps()
+        if self.need_to_read():
+            self._read_up_front()
+        self._update_time_steps()
         return 1 # NOTE: ALWAYS return 1 on pipeline methods
 
 
     #### Getters/Setters ####
 
 
-    def GetTimestepValues(self):
+    def get_time_step_values(self):
         """Use this in ParaView decorator to register timesteps on the pipeline.
         """
-        if self.NeedToRead():
-            self._ReadUpFront()
+        if self.need_to_read():
+            self._read_up_front()
         return self._timesteps if self._timesteps is not None else None
 
 
@@ -141,18 +141,18 @@ class netCDFPointsReaderBase(netCDFReaderBase):
 
     def RequestData(self, request, inInfo, outInfo):
         """Used by pipeline to get data for current timestep and populate the
-        output data object. This assumes that ``self._GetRawData()`` will return
-        a dataset ready for PVGeo's ``interface.pointsToPolyData()``.
+        output data object. This assumes that ``self._get_raw_data()`` will return
+        a dataset ready for PVGeo's ``interface.points_to_poly_data()``.
         """
         # Get output:
         output = self.GetOutputData(outInfo, 0)
         # Get requested time index
-        i = _helpers.getRequestedTime(self, outInfo)
-        if self.NeedToRead():
-            self._ReadUpFront()
+        i = _helpers.get_requested_time(self, outInfo)
+        if self.need_to_read():
+            self._read_up_front()
         # Get the data which has already been loaded
-        data = self._GetRawData(idx=i) # these should just be XYZ+attribute
+        data = self._get_raw_data(idx=i) # these should just be XYZ+attribute
         #   in either a numpy array or a pandas dataframe where first three
         #   columns are the XYZ arrays
-        output.DeepCopy(interface.pointsToPolyData(data))
+        output.DeepCopy(interface.points_to_poly_data(data))
         return 1 # NOTE: ALWAYS return 1 on pipeline methods

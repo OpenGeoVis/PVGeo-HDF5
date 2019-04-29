@@ -36,12 +36,12 @@ class SVCParcelReader(netCDFPointsReaderBase):
     #### File reading methods ####
 
 
-    def _ReadUpFront(self):
+    def _read_up_front(self):
         """This parses the loaded dataset to a NumPy ndarray. The first axis
         represents a time step in the model space.
         """
         # Perform Read
-        self._GetFileContents()
+        self._get_file_contents()
 
         ###############################################
         # TODO: this needs to be generalized for any array names
@@ -79,11 +79,11 @@ class SVCParcelReader(netCDFPointsReaderBase):
             self._keys.append(name)
             i += 1
         # Mark as read
-        self.NeedToRead(flag=False)
+        self.need_to_read(flag=False)
         return 1
 
 
-    def _GetRawData(self, idx=0):
+    def _get_raw_data(self, idx=0):
         """Get the Points as numpy ndarrays or pandas dataframe where first three
         columns are the XYZ coordinates
         """
@@ -97,7 +97,7 @@ class SVCParcelReader(netCDFPointsReaderBase):
 
     #### Getters/Setters ####
 
-    def SetDataName(self, name):
+    def set_data_name(self, name):
         """This is an example of how to set a property for this reader to use.
         Note that we do not use this property.
         """
@@ -123,12 +123,12 @@ class CMAQReader(netCDFReaderBase):
     #### File reading methods ####
 
 
-    def _ReadUpFront(self):
+    def _read_up_front(self):
         """This parses the loaded dataset to a NumPy ndarray. The first axis
         represents a time step in the model space.
         """
         # Perform Read
-        self._GetFileContents()
+        self._get_file_contents()
         # Set up time shape
         tflag = self._dataSet.variables['TFLAG']
         tshape = tflag.shape[0]
@@ -156,11 +156,11 @@ class CMAQReader(netCDFReaderBase):
         for i, k in enumerate(self._keys):
             self._data[:, :, i] = np.array(dataArrs[k])
         # Mark as read
-        self.NeedToRead(flag=False)
+        self.need_to_read(flag=False)
         return 1
 
 
-    def _GetRawData(self, idx=0):
+    def _get_raw_data(self, idx=0):
         """Get the Points as numpy ndarrays or pandas dataframe where first three
         columns are the XYZ coordinates
         """
@@ -169,9 +169,9 @@ class CMAQReader(netCDFReaderBase):
         df = pd.DataFrame(data=data, columns=self._keys)
         return df
 
-    def GetExtent(self, dim=False):
+    def get_extent(self, dim=False):
         if self.__shp is None:
-            self._ReadUpFront()
+            self._read_up_front()
         nz, ny, nx = self.__shp[1::]
         if dim:
             return (nx, ny, nz)
@@ -182,19 +182,19 @@ class CMAQReader(netCDFReaderBase):
 
     def RequestData(self, request, inInfo, outInfo):
         """Used by pipeline to get data for current timestep and populate the
-        output data object. This assumes that ``self._GetRawData()`` will return
-        a dataset ready for PVGeo's ``interface.pointsToPolyData()``.
+        output data object. This assumes that ``self._get_raw_data()`` will return
+        a dataset ready for PVGeo's ``interface.points_to_poly_data()``.
         """
         # Get output:
         output = self.GetOutputData(outInfo, 0)
         # Get requested time index
-        i = _helpers.getRequestedTime(self, outInfo)
-        if self.NeedToRead():
-            self._ReadUpFront()
+        i = _helpers.get_requested_time(self, outInfo)
+        if self.need_to_read():
+            self._read_up_front()
         # Get the data which has already been loaded
-        data = self._GetRawData(idx=i)
+        data = self._get_raw_data(idx=i)
         # Generate the data object
-        nx, ny, nz = self.GetExtent(dim=True)
+        nx, ny, nz = self.get_extent(dim=True)
         dx, dy, dz = self.__spacing
         ox, oy, oz = self.__origin
         output.SetDimensions(nx+1, ny+1, nz+1)
@@ -202,7 +202,7 @@ class CMAQReader(netCDFReaderBase):
         output.SetOrigin(ox, oy, oz)
         # Use table generater and convert because its easy:
         table = vtk.vtkTable()
-        interface.dataFrameToTable(data, table)
+        interface.data_frame_to_table(data, table)
         # now get arrays from table and add to cell data of output
         for i in range(table.GetNumberOfColumns()):
             output.GetCellData().AddArray(table.GetColumn(i))
@@ -216,23 +216,23 @@ class CMAQReader(netCDFReaderBase):
         # Call parent to handle time stuff
         netCDFReaderBase.RequestInformation(self, request, inInfo, outInfo)
         # Now set whole output extent
-        if self.NeedToRead():
-            self._ReadUpFront()
-        ext = self.GetExtent()
+        if self.need_to_read():
+            self._read_up_front()
+        ext = self.get_extent()
         info = outInfo.GetInformationObject(0)
         # Set WHOLE_EXTENT: This is absolutely necessary
         info.Set(vtk.vtkStreamingDemandDrivenPipeline.WHOLE_EXTENT(), ext, 6)
         return 1
 
 
-    def SetSpacing(self, dx, dy, dz):
+    def set_spacing(self, dx, dy, dz):
         """Set the spacing for each axial direction"""
         spac = (dx, dy, dz)
         if self.__spacing != spac:
             self.__spacing = spac
             self.Modified(readAgain=False)
 
-    def SetOrigin(self, ox, oy, oz):
+    def set_origin(self, ox, oy, oz):
         """Set the origin corner of the grid"""
         origin = (ox, oy, oz)
         if self.__origin != origin:
