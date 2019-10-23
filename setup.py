@@ -7,7 +7,7 @@ import platform
 import sys
 import os
 
-__version__ = '0.0.2'
+__version__ = '0.1.0'
 
 with open("README.rst", "r") as f:
     long_description = f.read()

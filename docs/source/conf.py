@@ -31,7 +31,7 @@ copyright = '2018, Bane Sullivan'
 author = 'Bane Sullivan'
 
 # The short X.Y version
-version = '0.0.2'
+version = '0.1.0'
 # The full version, including alpha/beta/rc tags
 release = ''
 
