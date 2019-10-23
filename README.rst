@@ -32,7 +32,10 @@ An offshoot of `PVGeo`_ for HDF5 and netCDF data formats.
 
 .. _PVGeo: http://pvgeo.org
 
-This project is a work in progress!
+This project is a work in progress! These plugins are meant to be used in
+ParaView - if you are using them in a pure Python environment, you're probably
+better off using ``netCDF4`` with PyVista than trying to fiddle with this
+somewhat convoluted code.
 
 
 Installation
@@ -49,6 +52,8 @@ Installation
 Examples
 --------
 
-Take a look at the notebook examples under the `examples directory`_
+Take a look at the notebook examples under the `examples directory`_. Those
+examples load some datasets that I have locally which are gigabytes ins size,
+so we don't really have a way to share them on GitHub. Sorry!
 
 .. _examples directory: https://github.com/OpenGeoVis/PVGeo-HDF5/tree/master/examples

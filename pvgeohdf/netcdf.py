@@ -104,7 +104,7 @@ class SVCParcelReader(netCDFPointsReaderBase):
         # WARNING: You must call ``self.Modified`` like below
         if self._dataName != name:
             self._dataName = name
-            self.Modified(readAgain=False)
+            self.modified(read_again=False)
 
 
 ###############################################################################
@@ -230,11 +230,18 @@ class CMAQReader(netCDFReaderBase):
         spac = (dx, dy, dz)
         if self.__spacing != spac:
             self.__spacing = spac
-            self.Modified(readAgain=False)
+            self.modified(read_again=False)
 
     def set_origin(self, ox, oy, oz):
         """Set the origin corner of the grid"""
         origin = (ox, oy, oz)
         if self.__origin != origin:
             self.__origin = origin
-            self.Modified(readAgain=False)
+            self.modified(read_again=False)
+
+
+
+
+class GriddedPointsReader(netCDFReaderBase):
+    """read gridded points from netCDF4 file"""
+    pass

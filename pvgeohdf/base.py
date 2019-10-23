@@ -31,20 +31,20 @@ class netCDFReaderBase(ReaderBaseBase):
 
     #### File reading methods ####
 
-    def GetFileName(self):
+    def get_file_name(self):
         """Super class has file names as a list but we will only handle a single
         netCDF file. This provides a conveinant way of making sure we only
         access that single file. A user could still access the list of file
         names using ``GetFileNames()``.
         """
-        return ReaderBaseBase.GetFileNames(self, idx=0)
+        return ReaderBaseBase.get_file_names(self, idx=0)
 
     def _get_file_contents(self, idx=None):
         """This opens a netCDF4 DataSet.
         This happens up front so the data read happens only once and ParaView
         will be able to make calls on the ``RequestData`` method to get the data
         for a specific timestep"""
-        self._dataSet = netCDF4.Dataset(self.GetFileName())
+        self._dataSet = netCDF4.Dataset(self.get_file_name())
         return 1
 
     def _read_up_front(self):

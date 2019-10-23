@@ -15,12 +15,11 @@ with open("README.rst", "r") as f:
 
 # Manage requirements
 install_requires=[
-    'PVGeo>=2.0.0a0',
+    'PVGeo>=2.0.4',
     'numpy>=1.13',
     'scipy>=1.1',
     'colour-runner==0.0.5',
     'codecov==2.0.15',
-    'vtk>=8.1.1',
     'netCDF4>=1.4.1',
 ]
 

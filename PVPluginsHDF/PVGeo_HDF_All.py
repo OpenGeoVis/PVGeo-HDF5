@@ -26,18 +26,18 @@ MENU_CAT = 'PVGeo-HDF'
 SVC_DESC = "SVC Parcel Reader: Time varying point cloud"
 
 @smproxy.reader(name="PVGeoHDFSVCParcelReader",
-       label="PVGeo: SVC Parcel Reader",
-       extensions=SVCParcelReader.extensions,
-       file_description=SVC_DESC)
+                label="PVGeo: SVC Parcel Reader",
+                extensions=SVCParcelReader.extensions,
+                file_description=SVC_DESC)
 class PVGeoHDFSVCParcelReader(SVCParcelReader):
     def __init__(self):
         SVCParcelReader.__init__(self)
 
     #### Seters and Geters ####
 
-    @smproperty.xml(_helpers.getFileReaderXml(SVCParcelReader.extensions, readerDescription=SVC_DESC))
-    def AddFileName(self, fname):
-        SVCParcelReader.AddFileName(self, fname)
+    @smproperty.xml(_helpers.get_file_reader_xml(SVCParcelReader.extensions, reader_description=SVC_DESC))
+    def add_file_name(self, fname):
+        SVCParcelReader.add_file_name(self, fname)
 
     # @smproperty.doublevector(name="TimeDelta", default_values=1.0, panel_visibility="advanced")
     # def SetTimeDelta(self, dt):
@@ -59,22 +59,22 @@ class PVGeoHDFSVCParcelReader(SVCParcelReader):
 SVC_DESC = "CMAQ Reader: Time varying grid"
 
 @smproxy.reader(name="PVGeoCMAQReader",
-       label="PVGeo: CMAQ Reader",
-       extensions=CMAQReader.extensions,
-       file_description=SVC_DESC)
+                label="PVGeo: CMAQ Reader",
+                extensions=CMAQReader.extensions,
+                file_description=SVC_DESC)
 class PVGeoCMAQReader(CMAQReader):
     def __init__(self):
         CMAQReader.__init__(self)
 
     #### Seters and Geters ####
 
-    @smproperty.xml(_helpers.getFileReaderXml(CMAQReader.extensions, readerDescription=SVC_DESC))
-    def AddFileName(self, fname):
-        CMAQReader.AddFileName(self, fname)
+    @smproperty.xml(_helpers.get_file_reader_xml(CMAQReader.extensions, reader_description=SVC_DESC))
+    def add_file_name(self, fname):
+        CMAQReader.add_file_name(self, fname)
 
     # @smproperty.doublevector(name="TimeDelta", default_values=1.0, panel_visibility="advanced")
-    # def SetTimeDelta(self, dt):
-    #     CMAQReader.SetTimeDelta(self, dt)
+    # def set_time_delta(self, dt):
+    #     CMAQReader.set_time_delta(self, dt)
 
     @smproperty.doublevector(name="TimestepValues", information_only="1", si_class="vtkSITimeStepsProperty")
     def get_time_step_values(self):
