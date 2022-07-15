@@ -19,7 +19,7 @@ install_requires=[
     'numpy>=1.13',
     'scipy>=1.1',
     'colour-runner==0.0.5',
-    'codecov==2.0.15',
+    'codecov==2.0.16',
     'netCDF4>=1.4.1',
 ]
 
